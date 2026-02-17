@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FikkayHub - Your One-Stop Online Store</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#home">
+                <i class="fas fa-shopping-bag"></i> FikkayHub
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#products">Shop</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="cartLink">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="badge bg-danger" id="cartCount" style="display: none;">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" id="authSection">
+                        <button class="btn btn-outline-light" id="loginBtn">Login</button>
+                    </li>
+                    <li class="nav-item d-none" id="userSection">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user"></i> <span id="userName"></span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="#" id="ordersLink">My Orders</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#" id="logoutBtn">Logout</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold mb-4 animate-fade-in">Welcome to FikkayHub</h1>
+                    <p class="lead mb-4 animate-fade-in">Discover amazing products at unbeatable prices. Shop from our wide range of categories.</p>
+                    <a href="#products" class="btn btn-primary btn-lg animate-fade-in">Start Shopping</a>
+                </div>
+                <div class="col-lg-6">
+                    <img src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=600" alt="Shopping" class="img-fluid rounded animate-slide-in">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="products-section py-5">
+        <div class="container">
+            <!-- Search and Filter Bar -->
+            <div class="filter-bar mb-4">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-search"></i></span>
+                            <input type="text" class="form-control" id="searchInput" placeholder="Search products...">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" id="categoryFilter">
+                            <option value="all">All Categories</option>
+                            <option value="shoes">Shoes</option>
+                            <option value="clothing">Clothing</option>
+                            <option value="watches">Watches</option>
+                            <option value="cosmetics">Cosmetics</option>
+                            <option value="appliances">Home Appliances</option>
+                            <option value="gadgets">Gadgets</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" id="brandFilter">
+                            <option value="all">All Brands</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-select" id="sortFilter">
+                            <option value="default">Sort By</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="name">Name: A-Z</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Price Range Filter - FIXED TO 2 MILLION -->
+            <div class="price-filter mb-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="priceRange" class="form-label">
+                            Price Range: ₦<span id="minPriceDisplay">0</span> - ₦<span id="maxPriceDisplay">30,000,000</span>
+                        </label>
+                        <div class="d-flex gap-3">
+                            <div class="flex-fill">
+                                <label class="small">Min</label>
+                                <input type="range" class="form-range" id="minPriceRange" min="0" max="30000000" step="50000" value="0">
+                            </div>
+                            <div class="flex-fill">
+                                <label class="small">Max</label>
+                                <input type="range" class="form-range" id="maxPriceRange" min="0" max="30000000" step="50000" value="2000000">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Count -->
+            <div class="products-header mb-4">
+                <h2>Our Products</h2>
+                <p class="text-muted">Showing <span id="productCount">0</span> products</p>
+            </div>
+
+            <!-- Products Grid - NO ROW/COL CLASSES -->
+            <div id="productsGrid">
+                <!-- Products will be loaded here dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Detail Modal -->
+    <div class="modal fade" id="productModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productModalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img id="modalProductImage" src="" alt="" class="img-fluid rounded">
+                        </div>
+                        <div class="col-md-6">
+                            <h3 id="modalProductName"></h3>
+                            <p class="text-muted" id="modalProductBrand"></p>
+                            <h4 class="text-primary mb-3" id="modalProductPrice"></h4>
+                            <p id="modalProductDescription"></p>
+                            <div class="mb-3">
+                                <label class="form-label">Quantity:</label>
+                                <div class="input-group" style="max-width: 150px;">
+                                    <button class="btn btn-outline-secondary" type="button" id="decreaseQty">-</button>
+                                    <input type="number" class="form-control text-center" id="productQuantity" value="1" min="1">
+                                    <button class="btn btn-outline-secondary" type="button" id="increaseQty">+</button>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary btn-lg w-100" id="addToCartBtn">
+                                <i class="fas fa-cart-plus"></i> Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div class="modal fade" id="cartModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Shopping Cart</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="cartItems">
+                    <!-- Cart items will be loaded here -->
+                </div>
+                <div class="modal-footer flex-column align-items-stretch">
+                    <div class="d-flex justify-content-between mb-3">
+                        <h5>Total:</h5>
+                        <h5 class="text-primary" id="cartTotal">₦0</h5>
+                    </div>
+                    <button class="btn btn-primary btn-lg" id="checkoutBtn">
+                        <i class="fas fa-credit-card"></i> Proceed to Checkout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="modal fade" id="checkoutModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Checkout</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="checkoutForm">
+                        <h6 class="mb-3">Delivery Information</h6>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="deliveryName" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="deliveryPhone" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Delivery Address</label>
+                                <textarea class="form-control" id="deliveryAddress" rows="3" required></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">City</label>
+                                <input type="text" class="form-control" id="deliveryCity" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">State</label>
+                                <select class="form-select" id="deliveryState" required>
+                                    <option value="">Select State</option>
+                                    <option value="Lagos">Lagos</option>
+                                    <option value="Abuja">Abuja</option>
+                                    <option value="Rivers">Rivers</option>
+                                    <option value="Kano">Kano</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <h6 class="mb-3">Payment Method</h6>
+                        <div class="payment-options mb-4">
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="paymentMethod" id="payOnDelivery" value="cod" checked>
+                                <label class="form-check-label" for="payOnDelivery">
+                                    <i class="fas fa-money-bill-wave"></i> Pay on Delivery
+                                </label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="paymentMethod" id="payOnline" value="online">
+                                <label class="form-check-label" for="payOnline">
+                                    <i class="fas fa-credit-card"></i> Pay Online (Card/Transfer)
+                                </label>
+                            </div>
+                        </div>
+
+                        <div id="onlinePaymentSection" class="d-none mb-4">
+                            <h6 class="mb-3">Card Details</h6>
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label">Card Number</label>
+                                    <input type="text" class="form-control" id="cardNumber" placeholder="1234 5678 9012 3456">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Expiry Date</label>
+                                    <input type="text" class="form-control" id="cardExpiry" placeholder="MM/YY">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">CVV</label>
+                                    <input type="text" class="form-control" id="cardCVV" placeholder="123">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="order-summary p-3 bg-light rounded">
+                            <h6>Order Summary</h6>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Subtotal:</span>
+                                <span id="checkoutSubtotal">₦0</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Delivery Fee:</span>
+                                <span id="deliveryFee">₦2,000</span>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between">
+                                <strong>Total:</strong>
+                                <strong class="text-primary" id="checkoutTotal">₦0</strong>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg w-100 mt-3">
+                            <i class="fas fa-check"></i> Place Order
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Login to ShopHub</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" id="loginEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" id="loginPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Login</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <p>Don't have an account? <a href="#" id="showRegisterBtn">Register here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create Account</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="registerForm">
+                        <div class="mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="registerName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" id="registerEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="registerPhone" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" id="registerPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" id="registerConfirmPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Register</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <p>Already have an account? <a href="#" id="showLoginBtn">Login here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center py-5">
+                    <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
+                    <h3 class="mt-3">Order Placed Successfully!</h3>
+                    <p class="text-muted">Thank you for your purchase. We'll send you a confirmation email shortly.</p>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Continue Shopping</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5><i class="fas fa-shopping-bag"></i> FikkayHub</h5>
+                    <p>Your trusted online shopping destination</p>
+                </div>
+                <div class="col-md-4">
+                    <h6>Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white-50">About Us</a></li>
+                        <li><a href="#" class="text-white-50">Contact</a></li>
+                        <li><a href="#" class="text-white-50">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h6>Follow Us</h6>
+                    <div class="social-links">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook fa-2x"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram fa-2x"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter fa-2x"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <p class="mb-0">&copy; 2026 FikkayHub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS --->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
